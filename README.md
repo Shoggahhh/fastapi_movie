@@ -11,7 +11,7 @@ Right click 'movie' -> Mark Directory as -> Sources Root
 Go to workdir
 
 ```shell
-cd url-shortener
+cd movie
 ```
 
 Run dev server
