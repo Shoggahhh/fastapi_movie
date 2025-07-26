@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, AnyHttpUrl
 
 
 class MovieBase(BaseModel):
@@ -7,7 +7,7 @@ class MovieBase(BaseModel):
     description: str
     rating: str
     age_rating: str
-    url: str
+    url: AnyHttpUrl
 
 
 class Movie(MovieBase):
