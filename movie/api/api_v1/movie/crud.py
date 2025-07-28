@@ -3,7 +3,7 @@ from movie.schemas.movie import Movie
 
 MOVIES = [
     Movie(
-        movie_id=301,
+        slug="mtrx",
         name="Matrix",
         description="some desc",
         rating="9.5",
@@ -11,7 +11,7 @@ MOVIES = [
         url="https://www.kinopoisk.ru/film/301/",
     ),
     Movie(
-        movie_id=328,
+        slug="lotr",
         name="Lord of the rings",
         description="some desc",
         rating="10",
