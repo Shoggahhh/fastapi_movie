@@ -2,7 +2,6 @@ from typing import Annotated
 
 from annotated_types import Len
 from pydantic import BaseModel, AnyHttpUrl
-from random import randint
 
 
 class MovieBase(BaseModel):

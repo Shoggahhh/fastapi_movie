@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status, Depends
 
-from api.api_v1.movie.dependecies import prefetch_movie
+from api.api_v1.movie.dependencies import prefetch_movie
 from api.api_v1.movie.crud import MOVIES
 from movie.schemas.movie import Movie, MovieCreate
 from typing import Annotated
