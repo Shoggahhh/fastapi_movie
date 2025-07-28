@@ -8,9 +8,11 @@ from schemas.movie import Movie
 router = APIRouter(prefix="/r", tags=["Redirect"])
 
 
-@router.get("/{movie_id}")
-@router.get("/{movie_id}/")
+@router.get("/{slug}")
+@router.get("/{slug}/")
 def redirect_on_movie(
     movie: Annotated[Movie, Depends(prefetch_movie)],
 ):
-    return RedirectResponse(url=movie.url)
+    return RedirectResponse(
+        url=str(movie.url),
+    )
