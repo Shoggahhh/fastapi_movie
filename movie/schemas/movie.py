@@ -26,6 +26,12 @@ class MovieUpdate(MovieBase):
     """
     Model for update Movie model
     """
+    name: Annotated[str, Len(min_length=1, max_length=60)]
+    description: Annotated[str, Len(min_length=5, max_length=100)]
+    rating: Annotated[str, Len(min_length=1, max_length=3)]
+    age_rating: Annotated[str, Len(min_length=2, max_length=3)]
+    subtitles: Annotated[str, Len(max_length=3)]
+    url: AnyHttpUrl
 
 
 class Movie(MovieBase):
