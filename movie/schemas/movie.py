@@ -5,11 +5,11 @@ from pydantic import BaseModel, AnyHttpUrl
 
 
 class MovieBase(BaseModel):
-    slug: str
-    name: str
-    description: str
-    rating: str
-    age_rating: str
+    name: Annotated[str, Len(min_length=1, max_length=60)]
+    description: Annotated[str, Len(min_length=5, max_length=100)]
+    rating: Annotated[str, Len(min_length=1, max_length=3)]
+    age_rating: Annotated[str, Len(min_length=2, max_length=3)]
+    subtitles: Annotated[str, Len(max_length=3)] = "ENG"
     url: AnyHttpUrl
 
 
@@ -20,13 +20,17 @@ class MovieCreate(MovieBase):
 
     # noinspection PyTypeHints
     slug: Annotated[str, Len(min_length=3, max_length=10)]
-    name: Annotated[str, Len(min_length=1, max_length=59)]
-    description: Annotated[str, Len(min_length=5, max_length=100)]
-    rating: Annotated[str, Len(min_length=1, max_length=2)]
-    age_rating: Annotated[str, Len(min_length=2, max_length=3)]
+
+
+class MovieUpdate(MovieBase):
+    """
+    Model for update Movie model
+    """
 
 
 class Movie(MovieBase):
     """
     Model of Movie
     """
+
+    slug: str
