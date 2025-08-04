@@ -30,12 +30,6 @@ class MovieStorage(BaseModel):
         self.slug_to_movie[movie_in.slug] = movie
         return movie
 
-    def delete_by_slug(self, slug: str) -> None:
-        self.slug_to_movie.pop(slug, None)
-
-    def delete(self, movie: Movie) -> None:
-        self.delete_by_slug(slug=movie.slug)
-
     def update(self, movie: Movie, movie_in: MovieUpdate) -> Movie:
         for field_name, value in movie_in:
             setattr(movie, field_name, value)
@@ -45,6 +39,12 @@ class MovieStorage(BaseModel):
         for field_name, value in movie_in.model_dump(exclude_unset=True).items():
             setattr(movie, field_name, value)
         return movie
+
+    def delete_by_slug(self, slug: str) -> None:
+        self.slug_to_movie.pop(slug, None)
+
+    def delete(self, movie: Movie) -> None:
+        self.delete_by_slug(slug=movie.slug)
 
 
 storage = MovieStorage()
