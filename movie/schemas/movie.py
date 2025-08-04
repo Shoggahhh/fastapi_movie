@@ -55,9 +55,18 @@ class MoviePartialUpdate(MovieBase):
     url: AnyHttpUrl | None = None
 
 
+class MovieRead(MovieBase):
+    """
+    Model to read data movie
+    """
+
+    slug: str
+
+
 class Movie(MovieBase):
     """
     Model of Movie
     """
 
     slug: str
+    notes : str
