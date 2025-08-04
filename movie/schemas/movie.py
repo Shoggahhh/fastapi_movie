@@ -4,12 +4,19 @@ from annotated_types import Len
 from pydantic import BaseModel, AnyHttpUrl
 
 
+NameString = Annotated[str, Len(min_length=1, max_length=60)]
+DescriptionString = Annotated[str, Len(min_length=5, max_length=100)]
+RatingString = Annotated[str, Len(min_length=1, max_length=3)]
+AgeRatingString = Annotated[str, Len(min_length=2, max_length=3)]
+SubtitlesString = Annotated[str, Len(max_length=3)]
+
+
 class MovieBase(BaseModel):
-    name: Annotated[str, Len(min_length=1, max_length=60)]
-    description: Annotated[str, Len(min_length=5, max_length=100)]
-    rating: Annotated[str, Len(min_length=1, max_length=3)]
-    age_rating: Annotated[str, Len(min_length=2, max_length=3)]
-    subtitles: Annotated[str, Len(max_length=3)] = "ENG"
+    name: NameString
+    description: DescriptionString
+    rating: RatingString
+    age_rating: AgeRatingString
+    subtitles: SubtitlesString = "ENG"
     url: AnyHttpUrl
 
 
@@ -26,12 +33,26 @@ class MovieUpdate(MovieBase):
     """
     Model for update Movie model
     """
-    name: Annotated[str, Len(min_length=1, max_length=60)]
-    description: Annotated[str, Len(min_length=5, max_length=100)]
-    rating: Annotated[str, Len(min_length=1, max_length=3)]
-    age_rating: Annotated[str, Len(min_length=2, max_length=3)]
-    subtitles: Annotated[str, Len(max_length=3)]
+
+    name: NameString
+    description: DescriptionString
+    rating: RatingString
+    age_rating: AgeRatingString
+    subtitles: SubtitlesString
     url: AnyHttpUrl
+
+
+class MoviePartialUpdate(MovieBase):
+    """
+    Model for partial update
+    """
+
+    name: NameString | None = None
+    description: DescriptionString | None = None
+    rating: RatingString | None = None
+    age_rating: AgeRatingString | None = None
+    subtitles: SubtitlesString | None = None
+    url: AnyHttpUrl | None = None
 
 
 class Movie(MovieBase):
