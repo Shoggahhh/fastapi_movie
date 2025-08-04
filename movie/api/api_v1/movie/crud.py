@@ -1,6 +1,11 @@
 from pydantic import BaseModel, AnyHttpUrl
 
-from movie.schemas.movie import Movie, MovieCreate, MovieUpdate
+from movie.schemas.movie import (
+    Movie,
+    MovieCreate,
+    MovieUpdate,
+    MoviePartialUpdate,
+)
 
 
 """
@@ -32,19 +37,13 @@ class MovieStorage(BaseModel):
         self.delete_by_slug(slug=movie.slug)
 
     def update(self, movie: Movie, movie_in: MovieUpdate) -> Movie:
-        # example to create new object
-        #
-        # update_movie = movie.model_copy(
-        #     update=movie.model_dump(),
-        # )
-        # self.slug_to_movie[update_movie.slug] = update_movie
-
         for field_name, value in movie_in:
             setattr(movie, field_name, value)
+        return movie
 
-        # don't create because we will create a database in the future
-        # self.slug_to_movie[movie.slug] = movie
-
+    def update_partial(self, movie: Movie, movie_in: MoviePartialUpdate) -> Movie:
+        for field_name, value in movie_in.model_dump(exclude_unset=True).items():
+            setattr(movie, field_name, value)
         return movie
 
 
