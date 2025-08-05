@@ -1,6 +1,10 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import (
+    APIRouter,
+    Depends,
+    BackgroundTasks,
+)
 from starlette import status
 
 from api.api_v1.movie.crud import storage
@@ -40,7 +44,12 @@ def read_movie_from_slug(movie: MovieBySlug) -> Movie:
 
 
 @router.put("/", response_model=MovieRead)
-def update_movie_details(movie: MovieBySlug, movie_in: MovieUpdate) -> Movie:
+def update_movie_details(
+    movie: MovieBySlug,
+    movie_in: MovieUpdate,
+    background_tasks: BackgroundTasks,
+) -> Movie:
+    background_tasks.add_task(storage.save_state)
     return storage.update(
         movie=movie,
         movie_in=movie_in,
@@ -49,8 +58,11 @@ def update_movie_details(movie: MovieBySlug, movie_in: MovieUpdate) -> Movie:
 
 @router.patch("/", response_model=MovieRead)
 def update_movie_details_partial(
-    movie: MovieBySlug, movie_in: MoviePartialUpdate
+    movie: MovieBySlug,
+    movie_in: MoviePartialUpdate,
+    background_tasks: BackgroundTasks,
 ) -> Movie:
+    background_tasks.add_task(storage.save_state)
     return storage.update_partial(
         movie=movie,
         movie_in=movie_in,
@@ -61,5 +73,9 @@ def update_movie_details_partial(
     "/",
     status_code=status.HTTP_204_NO_CONTENT,
 )
-def delete_movie(movie: MovieBySlug) -> None:
+def delete_movie(
+    movie: MovieBySlug,
+    background_tasks: BackgroundTasks,
+) -> None:
+    background_tasks.add_task(storage.save_state)
     storage.delete(movie=movie)
