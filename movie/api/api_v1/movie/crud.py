@@ -1,6 +1,4 @@
-import json
-
-from pydantic import BaseModel, AnyHttpUrl, ValidationError
+from pydantic import BaseModel, ValidationError
 
 from movie.schemas.movie import (
     Movie,
@@ -10,6 +8,7 @@ from movie.schemas.movie import (
 )
 from core.config import MOVIE_STORAGE_DIR
 
+import logging
 
 """
 Create
@@ -18,16 +17,20 @@ Update
 Delete
 """
 
+log = logging.getLogger(__file__)
+
 
 class MovieStorage(BaseModel):
     slug_to_movie: dict[str, Movie] = {}
 
     def save_state(self):
         MOVIE_STORAGE_DIR.write_text(self.model_dump_json(indent=2))
+        log.info("Saved movie to storage file")
 
     @classmethod
     def from_state(cls) -> "MovieStorage":
         if not MOVIE_STORAGE_DIR.exists():
+            log.info("Movie to storage file doesn't exist")
             return MovieStorage()
         return cls.model_validate_json(MOVIE_STORAGE_DIR.read_text())
 
@@ -65,9 +68,11 @@ class MovieStorage(BaseModel):
 
 try:
     storage = MovieStorage.from_state()
+    log.warning("Recovered data from storage file")
 except ValidationError:
     storage = MovieStorage()
     storage.save_state()
+    log.warning("Rewritten storage file due to validation error")
 
 # storage = MovieStorage()
 #
