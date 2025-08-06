@@ -80,29 +80,3 @@ class MovieStorage(BaseModel):
 
 
 storage = MovieStorage()
-
-
-# storage = MovieStorage()
-#
-#
-# storage.create(
-#     MovieCreate(
-#         slug="mtrx",
-#         name="Matrix",
-#         description="some desc",
-#         rating="9.5",
-#         age_rating="18+",
-#         url=AnyHttpUrl("https://www.kinopoisk.ru/film/301/"),
-#     )
-# )
-#
-# storage.create(
-#     MovieCreate(
-#         slug="lotr",
-#         name="Lord of the rings",
-#         description="some desc",
-#         rating="10",
-#         age_rating="18+",
-#         url=AnyHttpUrl("https://www.kinopoisk.ru/film/328/"),
-#     )
-# )
