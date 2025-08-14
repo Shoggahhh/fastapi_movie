@@ -4,26 +4,27 @@ from core import config
 redis = Redis(
     host=config.REDIS_HOST,
     port=config.REDIS_PORT,
-    db=config.REDIS_DB,
+    db=config.REDIS_USER_DB,
     decode_responses=True,
 )
 
 
 def main():
     print(redis.ping())
-    redis.set("foo", "bar")
-    redis.set("number", "42")
-    print("foo:", redis.get("foo"))
-    print("number:", redis.get("number"))
-    print(
-        [
-            redis.get("number"),
-            redis.get("foo"),
-            redis.get("spam"),
-        ]
-    )
-    redis.delete("foo")
-    print("foo:", redis.get("foo"))
+    print("user:", redis.get("sam"))
+    # redis.set("foo", "bar")
+    # redis.set("number", "42")
+    # print("foo:", redis.get("foo"))
+    # print("number:", redis.get("number"))
+    # print(
+    #     [
+    #         redis.get("number"),
+    #         redis.get("foo"),
+    #         redis.get("spam"),
+    #     ]
+    # )
+    # redis.delete("foo")
+    # print("foo:", redis.get("foo"))
 
 
 if __name__ == "__main__":
