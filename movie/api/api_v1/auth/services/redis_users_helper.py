@@ -31,5 +31,5 @@ class RedisUsersHelper(AbstractUsersHelper):
 redis_users = RedisUsersHelper(
     host=config.REDIS_HOST,
     port=config.REDIS_PORT,
-    db=config.REDIS_USER_DB,
+    db=config.REDIS_DB_USER,
 )
