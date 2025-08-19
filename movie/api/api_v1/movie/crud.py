@@ -102,7 +102,10 @@ class MovieStorage(BaseModel):
         )
 
     def delete_by_slug(self, slug: str) -> None:
-        self.slug_to_movie.pop(slug, None)
+        redis.hdel(
+            config.REDIS_MOVIES_HASH_NAME,
+            slug,
+        )
         log.info("Deleted movie by slug %s", slug)
 
     def delete(self, movie: Movie) -> None:
