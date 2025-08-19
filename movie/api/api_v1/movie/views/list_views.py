@@ -45,6 +45,18 @@ def read_all_movies():
     "/",
     response_model=MovieRead,
     status_code=status.HTTP_201_CREATED,
+    responses={
+        status.HTTP_409_CONFLICT: {
+            "description": "A movie with such slug already exist",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": f"Movie with slug='name' is already exists",
+                    },
+                },
+            },
+        },
+    },
 )
 def create_movie(
     movie_create: MovieCreate,
