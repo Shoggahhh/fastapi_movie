@@ -2,6 +2,7 @@ from fastapi import (
     APIRouter,
     status,
     Depends,
+    HTTPException,
 )
 
 from api.api_v1.movie.crud import storage
@@ -48,4 +49,10 @@ def read_all_movies():
 def create_movie(
     movie_create: MovieCreate,
 ) -> Movie:
-    return storage.create(movie_create)
+    if not storage.get_by_slug(movie_create.slug):
+        return storage.create(movie_create)
+
+    raise HTTPException(
+        status_code=status.HTTP_409_CONFLICT,
+        detail=f"Movie with slug={movie_create.slug!r} is already exists",
+    )
