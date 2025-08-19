@@ -29,6 +29,18 @@ redis = Redis(
 )
 
 
+class MovieBaseError(Exception):
+    """
+    Base exception for movie CRUD actions.
+    """
+
+
+class MovieAlreadyExists(MovieBaseError):
+    """
+    Raised in movie creation if such slug is already exists.
+    """
+
+
 class MovieStorage(BaseModel):
     slug_to_movie: dict[str, Movie] = {}
 
@@ -55,6 +67,12 @@ class MovieStorage(BaseModel):
             return Movie.model_validate_json(result)
         return None
 
+    def exists(self, slug) -> bool:
+        return redis.hexists(
+            name=config.REDIS_MOVIES_HASH_NAME,
+            key=slug,
+        )
+
     def create(self, movie_in: MovieCreate) -> Movie:
         movie = Movie(
             **movie_in.model_dump(),
@@ -62,6 +80,11 @@ class MovieStorage(BaseModel):
         self.save_movie(movie)
         log.info("Created movie %s", movie)
         return movie
+
+    def create_or_raise_if_exists(self, movie_in: MovieCreate) -> Movie:
+        if not self.exists(movie_in.slug):
+            return self.create(movie_in)
+        raise MovieAlreadyExists(movie_in.slug)
 
     def update(self, movie: Movie, movie_in: MovieUpdate):
         for field_name, value in movie_in:
