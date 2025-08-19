@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel
 from redis import Redis
 
 from core import config
@@ -32,29 +32,12 @@ redis = Redis(
 class MovieStorage(BaseModel):
     slug_to_movie: dict[str, Movie] = {}
 
-    def save_state(self):
-        MOVIE_STORAGE_DIR.write_text(self.model_dump_json(indent=2))
-        log.info("Saved movie to storage file")
-
     @classmethod
     def from_state(cls) -> "MovieStorage":
         if not MOVIE_STORAGE_DIR.exists():
             log.info("Movie to storage file doesn't exist")
             return MovieStorage()
         return cls.model_validate_json(MOVIE_STORAGE_DIR.read_text())
-
-    def init_storage_from_state(self) -> None:
-        try:
-            data = MovieStorage.from_state()
-        except ValidationError:
-            self.save_state()
-            log.warning("Rewritten storage file due to validation error")
-            return
-
-        self.slug_to_movie.update(
-            data.slug_to_movie,
-        )
-        log.warning("Recovered data from storage file")
 
     def get(self) -> list[Movie]:
         result = [
