@@ -9,7 +9,7 @@ from api.api_v1.movie.crud import storage, MovieAlreadyExists
 from api.api_v1.movie.dependencies import (
     api_token_or_user_basic_auth_required_for_unsafe_methods,
 )
-from movie.schemas.movie import (
+from schemas.movie import (
     Movie,
     MovieCreate,
     MovieRead,
