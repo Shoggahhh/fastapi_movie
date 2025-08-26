@@ -60,7 +60,7 @@ def prefetch_movie(slug: str):
 
 
 def validate_api_token(api_token: HTTPAuthorizationCredentials | None):
-    if redis_tokens.token_exist(
+    if redis_tokens.token_exists(
         api_token.credentials,
     ):
         return

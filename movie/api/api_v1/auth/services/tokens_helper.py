@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 
 class AbstractTokensHelper(ABC):
     @abstractmethod
-    def token_exist(self, token: str) -> bool:
+    def token_exists(self, token: str) -> bool:
         """
         Check if tokens exist
         :param token:
