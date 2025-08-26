@@ -22,7 +22,14 @@ class AbstractTokensHelper(ABC):
     @abstractmethod
     def get_tokens(self) -> list[str] | None:
         """
-        Get list of tokens
+        Get list of tokens.
+        :return:
+        """
+
+    @abstractmethod
+    def delete_token(self, token) -> None:
+        """
+        Delete token
         :return:
         """
 
