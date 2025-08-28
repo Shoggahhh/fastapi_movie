@@ -5,7 +5,7 @@ from typing import Annotated
 from rich.markdown import Markdown
 
 from api.api_v1.auth.services import redis_tokens as tokens
-import secrets
+
 
 app = typer.Typer(
     name="token",

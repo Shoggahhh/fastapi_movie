@@ -4,7 +4,7 @@ from api.redirect_views import router as redirect_router
 import logging
 
 from app_lifespan import lifespan
-from movie.core import config
+from core import config
 
 app = FastAPI(
     title="Movie",

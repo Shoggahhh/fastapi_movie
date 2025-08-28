@@ -16,7 +16,7 @@ class MovieBase(BaseModel):
     description: DescriptionString
     rating: RatingString
     age_rating: AgeRatingString
-    subtitles: SubtitlesString = "ENG"
+    subtitles: SubtitlesString
     url: AnyHttpUrl
 
 
@@ -34,15 +34,10 @@ class MovieUpdate(MovieBase):
     Model for update Movie model
     """
 
-    name: NameString
-    description: DescriptionString
-    rating: RatingString
-    age_rating: AgeRatingString
-    subtitles: SubtitlesString
-    url: AnyHttpUrl
+    subtitles: SubtitlesString = "ENG"
 
 
-class MoviePartialUpdate(MovieBase):
+class MoviePartialUpdate(BaseModel):
     """
     Model for partial update
     """

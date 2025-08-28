@@ -1,3 +1,5 @@
+from typing import Iterable, cast
+
 from pydantic import BaseModel
 from redis import Redis
 
@@ -8,7 +10,6 @@ from schemas.movie import (
     MovieUpdate,
     MoviePartialUpdate,
 )
-from core.config import MOVIE_STORAGE_DIR
 
 import logging
 
@@ -44,34 +45,25 @@ class MovieAlreadyExists(MovieBaseError):
 class MovieStorage(BaseModel):
     slug_to_movie: dict[str, Movie] = {}
 
-    @classmethod
-    def from_state(cls) -> "MovieStorage":
-        if not MOVIE_STORAGE_DIR.exists():
-            log.info("Movie to storage file doesn't exist")
-            return MovieStorage()
-        return cls.model_validate_json(MOVIE_STORAGE_DIR.read_text())
-
     def get(self) -> list[Movie]:
         result = [
             Movie.model_validate_json(value)
-            for value in redis.hvals(config.REDIS_MOVIES_HASH_NAME)
+            for value in cast(
+                Iterable[str],
+                redis.hvals(config.REDIS_MOVIES_HASH_NAME),
+            )
         ]
         return result
 
     def get_by_slug(self, slug: str) -> Movie | None:
-        result = redis.hget(
+        data = redis.hget(
             name=config.REDIS_MOVIES_HASH_NAME,
             key=slug,
         )
-        if result:
-            return Movie.model_validate_json(result)
+        if data:
+            assert isinstance(data, str)
+            return Movie.model_validate_json(data)
         return None
-
-    def exists(self, slug) -> bool:
-        return redis.hexists(
-            name=config.REDIS_MOVIES_HASH_NAME,
-            key=slug,
-        )
 
     def create(self, movie_in: MovieCreate) -> Movie:
         movie = Movie(
@@ -80,11 +72,6 @@ class MovieStorage(BaseModel):
         self.save_movie(movie)
         log.info("Created movie %s", movie)
         return movie
-
-    def create_or_raise_if_exists(self, movie_in: MovieCreate) -> Movie:
-        if not self.exists(movie_in.slug):
-            return self.create(movie_in)
-        raise MovieAlreadyExists(movie_in.slug)
 
     def update(self, movie: Movie, movie_in: MovieUpdate):
         for field_name, value in movie_in:

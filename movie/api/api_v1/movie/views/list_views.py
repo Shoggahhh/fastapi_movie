@@ -62,7 +62,7 @@ def create_movie(
     movie_create: MovieCreate,
 ) -> Movie:
     try:
-        return storage.create_or_raise_if_exists(movie_create)
+        return storage.create(movie_create)
     except MovieAlreadyExists:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,

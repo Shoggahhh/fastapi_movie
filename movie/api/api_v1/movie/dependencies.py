@@ -3,7 +3,6 @@ from typing import Annotated
 
 from fastapi import (
     HTTPException,
-    BackgroundTasks,
     Request,
     status,
 )
@@ -59,7 +58,7 @@ def prefetch_movie(slug: str):
     )
 
 
-def validate_api_token(api_token: HTTPAuthorizationCredentials | None):
+def validate_api_token(api_token: HTTPAuthorizationCredentials):
     if redis_tokens.token_exists(
         api_token.credentials,
     ):
@@ -138,7 +137,6 @@ def api_token_or_user_basic_auth_required_for_unsafe_methods(
 
     if credentials:
         return validate_basic_auth(credentials=credentials)
-
     if api_token:
         return validate_api_token(api_token=api_token)
 

@@ -1,5 +1,5 @@
 from redis import Redis
-
+from typing import cast
 from api.api_v1.auth.services.tokens_helper import AbstractTokensHelper
 from core import config
 
@@ -32,7 +32,7 @@ class RedisTokensHelper(AbstractTokensHelper):
         self.redis.sadd(self.tokens_set, token)
 
     def get_tokens(self) -> list[str] | None:
-        return list(self.redis.smembers(self.tokens_set))
+        return list(cast(list[str], self.redis.smembers(self.tokens_set)))
 
     def delete_token(self, token: str) -> None:
         self.redis.srem(self.tokens_set, token)
