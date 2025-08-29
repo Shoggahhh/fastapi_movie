@@ -17,4 +17,3 @@ def hello(
     ],
 ) -> None:
     print(f"[bold]Hello, [green]{name}[/green]![/bold]")
-    return None

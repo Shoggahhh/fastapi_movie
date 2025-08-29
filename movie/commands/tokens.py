@@ -83,8 +83,8 @@ def delete(
     """
     if not tokens.token_exists(token):
         print(f"Token [bold]{token} [red]does not exist[/red][/bold].")
-        return None
+        return
 
     tokens.delete_token(token)
     print(f"Token [bold]{token}[/bold] removed from db.")
-    return None
+    return
