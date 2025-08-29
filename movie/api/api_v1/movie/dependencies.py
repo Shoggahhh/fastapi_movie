@@ -21,7 +21,7 @@ from api.api_v1.auth.services import (
 from api.api_v1.movie.crud import storage
 from schemas.movie import Movie
 
-log = logging.getLogger(__file__)
+log = logging.getLogger(__name__)
 
 UNSAFE_METHODS = frozenset(
     {

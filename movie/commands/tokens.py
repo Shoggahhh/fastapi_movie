@@ -40,7 +40,7 @@ def list_tokens() -> None:
     Get all tokens
     """
     print(Markdown("# Available API Tokens"))
-    print(Markdown("\n- ".join([""] + tokens.get_tokens() or [])))
+    print(Markdown("\n- ".join(["", *tokens.get_tokens()])))
     print()
 
 

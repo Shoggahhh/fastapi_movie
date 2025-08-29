@@ -20,7 +20,7 @@ Update
 Delete
 """
 
-log = logging.getLogger(__file__)
+log = logging.getLogger(__name__)
 
 redis = Redis(
     host=config.REDIS_HOST,
@@ -30,30 +30,17 @@ redis = Redis(
 )
 
 
-class MovieBaseError(Exception):
-    """
-    Base exception for movie CRUD actions.
-    """
-
-
-class MovieAlreadyExists(MovieBaseError):
-    """
-    Raised in movie creation if such slug is already exists.
-    """
-
-
 class MovieStorage(BaseModel):
     slug_to_movie: dict[str, Movie] = {}
 
     def get(self) -> list[Movie]:
-        result = [
+        return [
             Movie.model_validate_json(value)
             for value in cast(
                 Iterable[str],
                 redis.hvals(config.REDIS_MOVIES_HASH_NAME),
             )
         ]
-        return result
 
     def get_by_slug(self, slug: str) -> Movie | None:
         data = redis.hget(
