@@ -22,6 +22,19 @@ Delete
 
 log = logging.getLogger(__name__)
 
+
+class MovieBaseError(Exception):
+    """
+    Base exception for movie CRUD actions.
+    """
+
+
+class MovieAlreadyExistsError(MovieBaseError):
+    """
+    Raised in movie creation if such slug is already exists.
+    """
+
+
 redis = Redis(
     host=config.REDIS_HOST,
     port=config.REDIS_PORT,
