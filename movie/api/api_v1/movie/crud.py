@@ -1,3 +1,4 @@
+import logging
 from typing import Iterable, cast
 
 from pydantic import BaseModel
@@ -7,11 +8,9 @@ from core import config
 from schemas.movie import (
     Movie,
     MovieCreate,
-    MovieUpdate,
     MoviePartialUpdate,
+    MovieUpdate,
 )
-
-import logging
 
 """
 Create

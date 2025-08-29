@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Request, Response
-from api import router as api_router
-from api.redirect_views import router as redirect_router
 import logging
 
+from fastapi import FastAPI, Request
+
+from api import router as api_router
+from api.redirect_views import router as redirect_router
 from app_lifespan import lifespan
 from core import config
 

@@ -10,9 +10,9 @@ from api.api_v1.movie.crud import storage
 from api.api_v1.movie.dependencies import prefetch_movie
 from schemas.movie import (
     Movie,
-    MovieUpdate,
     MoviePartialUpdate,
     MovieRead,
+    MovieUpdate,
 )
 
 router = APIRouter(

@@ -1,11 +1,11 @@
 from fastapi import (
     APIRouter,
-    status,
     Depends,
     HTTPException,
+    status,
 )
 
-from api.api_v1.movie.crud import storage, MovieAlreadyExists
+from api.api_v1.movie.crud import MovieAlreadyExists, storage
 from api.api_v1.movie.dependencies import (
     api_token_or_user_basic_auth_required_for_unsafe_methods,
 )
@@ -51,7 +51,7 @@ def read_all_movies() -> list[Movie]:
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": f"Movie with slug='name' is already exists",
+                        "detail": "Movie with slug='name' is already exists",
                     },
                 },
             },

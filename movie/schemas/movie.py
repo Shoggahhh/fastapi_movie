@@ -1,8 +1,7 @@
 from typing import Annotated
 
 from annotated_types import Len
-from pydantic import BaseModel, AnyHttpUrl
-
+from pydantic import AnyHttpUrl, BaseModel
 
 NameString = Annotated[str, Len(min_length=1, max_length=60)]
 DescriptionString = Annotated[str, Len(min_length=5, max_length=100)]

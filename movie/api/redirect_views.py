@@ -1,8 +1,9 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends
 from fastapi.responses import RedirectResponse
-from typing import Annotated
-from api.api_v1.movie.dependencies import prefetch_movie
 
+from api.api_v1.movie.dependencies import prefetch_movie
 from schemas.movie import Movie
 
 router = APIRouter(prefix="/r", tags=["Redirect"])
