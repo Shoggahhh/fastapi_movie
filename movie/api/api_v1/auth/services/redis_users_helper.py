@@ -28,8 +28,9 @@ class RedisUsersHelper(AbstractUsersHelper):
             self.redis.get(username),
         )
 
-    def add_user(self, username, password: str) -> None:
+    def add_user(self, username: str, password: str) -> None:
         self.redis.set(username, password)
+        return None
 
 
 redis_users = RedisUsersHelper(

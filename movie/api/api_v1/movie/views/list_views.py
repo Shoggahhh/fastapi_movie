@@ -37,7 +37,7 @@ router = APIRouter(
 
 
 @router.get("/", response_model=list[MovieRead])
-def read_all_movies():
+def read_all_movies() -> list[Movie]:
     return storage.get()
 
 

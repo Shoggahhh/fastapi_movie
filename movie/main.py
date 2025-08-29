@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from api import router as api_router
 from api.redirect_views import router as redirect_router
 import logging
@@ -21,7 +21,7 @@ logging.basicConfig(
 
 
 @app.get("/")
-def read_root(request: Request):
+def read_root(request: Request) -> dict[str, str]:
     docs_url = request.url.replace(
         path="/docs",
         query="",

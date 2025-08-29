@@ -47,7 +47,7 @@ user_basic_auth = HTTPBasic(
 )
 
 
-def prefetch_movie(slug: str):
+def prefetch_movie(slug: str) -> Movie:
     movie: Movie | None = storage.get_by_slug(slug=slug)
 
     if movie:
@@ -58,7 +58,7 @@ def prefetch_movie(slug: str):
     )
 
 
-def validate_api_token(api_token: HTTPAuthorizationCredentials):
+def validate_api_token(api_token: HTTPAuthorizationCredentials) -> None:
     if redis_tokens.token_exists(
         api_token.credentials,
     ):
@@ -75,7 +75,7 @@ def api_token_required_for_unsafe_methods(
         HTTPAuthorizationCredentials | None,
         Depends(static_api_token),
     ] = None,
-):
+) -> None:
     log.info("Api token: %s", api_token)
     if request.method not in UNSAFE_METHODS:
         return
@@ -91,7 +91,7 @@ def api_token_required_for_unsafe_methods(
 
 def validate_basic_auth(
     credentials: HTTPBasicCredentials | None,
-):
+) -> None:
     log.info("User auth credentialas: %s", credentials)
     if credentials and redis_users.validate_user_password(
         username=credentials.username,
@@ -112,7 +112,7 @@ def user_basic_auth_required_for_unsafe_methods(
         HTTPBasicCredentials | None,
         Depends(user_basic_auth),
     ] = None,
-):
+) -> None:
     if request.method not in UNSAFE_METHODS:
         return
 
@@ -131,9 +131,9 @@ def api_token_or_user_basic_auth_required_for_unsafe_methods(
         HTTPBasicCredentials | None,
         Depends(user_basic_auth),
     ] = None,
-):
+) -> None:
     if request.method not in UNSAFE_METHODS:
-        return
+        return None
 
     if credentials:
         return validate_basic_auth(credentials=credentials)

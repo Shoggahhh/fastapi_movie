@@ -12,7 +12,7 @@ router = APIRouter(prefix="/r", tags=["Redirect"])
 @router.get("/{slug}/")
 def redirect_on_movie(
     movie: Annotated[Movie, Depends(prefetch_movie)],
-):
+) -> RedirectResponse:
     return RedirectResponse(
         url=str(movie.url),
     )

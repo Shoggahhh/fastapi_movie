@@ -73,21 +73,21 @@ class MovieStorage(BaseModel):
         log.info("Created movie %s", movie)
         return movie
 
-    def update(self, movie: Movie, movie_in: MovieUpdate):
+    def update(self, movie: Movie, movie_in: MovieUpdate) -> Movie:
         for field_name, value in movie_in:
             setattr(movie, field_name, value)
         self.save_movie(movie)
         log.info("Updated movie %s", movie)
         return movie
 
-    def update_partial(self, movie: Movie, movie_in: MoviePartialUpdate):
+    def update_partial(self, movie: Movie, movie_in: MoviePartialUpdate) -> Movie:
         for field_name, value in movie_in.model_dump(exclude_unset=True).items():
             setattr(movie, field_name, value)
         self.save_movie(movie)
         log.info("Updated partial movie %s", movie)
         return movie
 
-    def save_movie(self, movie: Movie):
+    def save_movie(self, movie: Movie) -> None:
         redis.hset(
             config.REDIS_MOVIES_HASH_NAME,
             key=movie.slug,
