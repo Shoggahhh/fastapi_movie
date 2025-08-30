@@ -142,3 +142,6 @@ unfixable = []
 "stuff.py" = [
     "T20", # flake8-print (T20)
 ]
+"testing/**/*.py" = [
+    "S311"
+]
