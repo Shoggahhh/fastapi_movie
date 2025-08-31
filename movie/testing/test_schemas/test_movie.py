@@ -47,6 +47,32 @@ class MovieCreateTestCase(TestCase):
             movie.url,
         )
 
+    def test_movie_create_accepts_different_urls(self) -> None:
+        urls = [
+            "http://example.com",
+            "https://example",
+            # "rtmp://video.example.com",
+            # "rtmps://video.example.com",
+            "http://abc.example.com",
+            "https://www.example.com/foobar/",
+        ]
+
+        for url in urls:
+            with self.subTest(url=url, msg=f"test-url-{url}"):
+                movie_create = MovieCreate(
+                    slug="some slug",
+                    name="some name",
+                    description="some description",
+                    rating="100",
+                    age_rating="18+",
+                    subtitles="ENG",
+                    url=url,
+                )
+                self.assertEqual(
+                    url.rstrip("/"),
+                    movie_create.model_dump(mode="json")["url"].rstrip("/"),
+                )
+
 
 class MovieUpdateTestCase(TestCase):
     def test_movie_can_be_update_from_schema(self) -> None:
