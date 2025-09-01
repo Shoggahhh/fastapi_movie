@@ -1,5 +1,7 @@
 from unittest import TestCase
 
+from pydantic import ValidationError
+
 from schemas.movie import Movie, MovieCreate, MoviePartialUpdate, MovieUpdate
 
 
@@ -72,6 +74,42 @@ class MovieCreateTestCase(TestCase):
                     url.rstrip("/"),
                     movie_create.model_dump(mode="json")["url"].rstrip("/"),
                 )
+
+    def test_movie_url_slug_too_short(self) -> None:
+        with self.assertRaises(ValidationError) as ex_info:
+            MovieCreate(
+                slug="s",
+                name="some name",
+                description="some description",
+                rating="10",
+                age_rating="18+",
+                subtitles="ENG",
+                url="https://example.com",
+            )
+        error_details = ex_info.exception.errors()[0]
+        excepted_type = "string_too_short"
+        self.assertEqual(
+            excepted_type,
+            error_details["type"],
+        )
+
+    def test_movie_url_slug_too_long(self) -> None:
+        with self.assertRaises(ValidationError) as ex_info:
+            MovieCreate(
+                slug="so_long_slug_here",
+                name="some name",
+                description="some description",
+                rating="10",
+                age_rating="18+",
+                subtitles="ENG",
+                url="https://example.com",
+            )
+        error_deatails = ex_info.exception.errors()[0]
+        excepted_type = "string_too_long"
+        self.assertEqual(
+            excepted_type,
+            error_deatails["type"],
+        )
 
 
 class MovieUpdateTestCase(TestCase):
