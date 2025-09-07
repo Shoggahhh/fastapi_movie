@@ -44,7 +44,6 @@ redis = Redis(
 
 
 class MovieStorage(BaseModel):
-    slug_to_movie: dict[str, Movie] = {}
 
     def get(self) -> list[Movie]:
         return [
@@ -65,6 +64,15 @@ class MovieStorage(BaseModel):
             return Movie.model_validate_json(data)
         return None
 
+    def exists(self, slug: str) -> bool:
+        return cast(
+            bool,
+            redis.hexists(
+                name=config.REDIS_MOVIES_HASH_NAME,
+                key=slug,
+            ),
+        )
+
     def create(self, movie_in: MovieCreate) -> Movie:
         movie = Movie(
             **movie_in.model_dump(),
@@ -72,6 +80,12 @@ class MovieStorage(BaseModel):
         self.save_movie(movie)
         log.info("Created movie %s", movie)
         return movie
+
+    def create_or_raises_if_exists(self, movie_in: MovieCreate) -> Movie:
+        if not self.exists(movie_in.slug):
+            return self.create(movie_in)
+
+        raise MovieAlreadyExistsError(movie_in.slug)
 
     def update(self, movie: Movie, movie_in: MovieUpdate) -> Movie:
         for field_name, value in movie_in:
