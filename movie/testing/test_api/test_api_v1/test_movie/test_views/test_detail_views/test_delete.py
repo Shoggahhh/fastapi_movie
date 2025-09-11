@@ -5,20 +5,8 @@ from fastapi.testclient import TestClient
 
 from api.api_v1.movie.crud import storage
 from main import app
-from schemas.movie import Movie, MovieCreate
-
-
-def create_movie(slug: str) -> Movie:
-    movie_in = MovieCreate(
-        slug=slug,
-        name="some name",
-        description="some description",
-        rating="100",
-        age_rating="18+",
-        subtitles="ENG",
-        url="https://example.com",
-    )
-    return storage.create(movie_in)
+from schemas.movie import Movie
+from testing.conftest import create_movie
 
 
 @pytest.fixture(
