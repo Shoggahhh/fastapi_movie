@@ -5,7 +5,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from main import app
-from schemas.movie import MovieCreate
+from schemas.movie import Movie, MovieCreate
 
 
 def test_create_movie(auth_client: TestClient) -> None:
@@ -33,3 +33,20 @@ def test_create_movie(auth_client: TestClient) -> None:
     response_data = response.json()
     received_value = MovieCreate(**response_data)
     assert received_value == movie_create, response_data
+
+
+def test_create_or_already_exist(
+    auth_client: TestClient,
+    movie: Movie,
+) -> None:
+    url = app.url_path_for("create_movie")
+    movie_create = MovieCreate(**movie.model_dump())
+    data: dict[str, str] = movie_create.model_dump(mode="json")
+    response = auth_client.post(
+        url=url,
+        json=data,
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT, response.text
+    response_data = response.json()
+    expected_error_detail = f"Movie with slug={movie_create.slug!r} is already exists"
+    assert response_data["detail"] == expected_error_detail, response_data
