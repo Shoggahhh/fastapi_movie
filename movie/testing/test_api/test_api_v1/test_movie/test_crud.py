@@ -1,6 +1,5 @@
 import random
 import string
-from collections.abc import Generator
 from typing import ClassVar
 from unittest import TestCase
 
@@ -29,13 +28,6 @@ def create_movie() -> Movie:
         url="https://example.com",
     )
     return storage.create(movie_in)
-
-
-@pytest.fixture
-def movie() -> Generator[Movie]:
-    movie = create_movie()
-    yield movie
-    storage.delete(movie)
 
 
 class MovieCreateUpdateTestCase(TestCase):
