@@ -1,10 +1,12 @@
 from typing import Annotated
 
-from annotated_types import Len
+from annotated_types import Len, MaxLen
 from pydantic import AnyHttpUrl, BaseModel
 
+DESCRIPTION_MAX_LENGTH = 200
+
 NameString = Annotated[str, Len(min_length=1, max_length=60)]
-DescriptionString = Annotated[str, Len(min_length=5, max_length=100)]
+DescriptionString = Annotated[str, MaxLen(DESCRIPTION_MAX_LENGTH)]
 RatingString = Annotated[str, Len(min_length=1, max_length=3)]
 AgeRatingString = Annotated[str, Len(min_length=2, max_length=3)]
 SubtitlesString = Annotated[str, Len(max_length=3)]
