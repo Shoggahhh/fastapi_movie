@@ -1,0 +1,46 @@
+import pytest
+from _pytest.fixtures import SubRequest
+from fastapi import status
+from fastapi.testclient import TestClient
+
+from api.api_v1.movie.crud import storage
+from main import app
+from schemas.movie import Movie, MovieCreate
+
+
+def create_movie(slug: str) -> Movie:
+    movie_in = MovieCreate(
+        slug=slug,
+        name="some name",
+        description="some description",
+        rating="100",
+        age_rating="18+",
+        subtitles="ENG",
+        url="https://example.com",
+    )
+    return storage.create(movie_in)
+
+
+@pytest.fixture(
+    params=[
+        "some-slug",
+        "slug",
+        pytest.param("abc", id="minimal-slug"),
+        pytest.param("qwertyabcd", id="max-slug"),
+    ],
+)
+def movie(request: SubRequest) -> Movie:
+    return create_movie(request.param)
+
+
+def test_delete_movie(
+    movie: Movie,
+    auth_client: TestClient,
+) -> None:
+    url = app.url_path_for(
+        "delete_movie",
+        slug=movie.slug,
+    )
+    response = auth_client.delete(url)
+    assert response.status_code == status.HTTP_204_NO_CONTENT, response.text
+    assert not storage.exists(movie.slug)
