@@ -26,6 +26,7 @@ def main() -> None:
     )
     redis.delete("foo")
     print("foo:", redis.get("foo"))
+    print("spam:", redis.get("bar"))
 
 
 if __name__ == "__main__":
