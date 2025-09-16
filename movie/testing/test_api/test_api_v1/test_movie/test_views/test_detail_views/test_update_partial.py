@@ -11,6 +11,7 @@ from schemas.movie import DESCRIPTION_MAX_LENGTH, Movie
 from testing.conftest import create_movie
 
 
+@pytest.mark.apitest
 class TestUpdatePartial:
 
     @pytest.fixture()
