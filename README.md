@@ -2,6 +2,8 @@
 
 ## Developer
 
+Check GitHub Action after any push
+
 ### Setup
 
 Right click 'movie' -> Mark Directory as -> Sources Root
