@@ -10,7 +10,16 @@ redis = Redis(
 )
 
 
+def add(a: int, b: int) -> int:
+    return a + b
+
+
 def main() -> None:
+    a = 1
+    b = 2
+    c = add(a, b)
+    print(c)
+    print("type c")
     print(redis.ping())
     print("user:", redis.get("sam"))
     redis.set("foo", "bar")
