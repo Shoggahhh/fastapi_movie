@@ -1,0 +1,18 @@
+name: Python checks 🐍
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "movie/**"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello Action
+        run: echo "Hello Action"
