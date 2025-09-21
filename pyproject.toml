@@ -21,6 +21,10 @@ dev = [
     "ruff>=0.12.11",
 ]
 
+# uv settings
+[tool.uv]
+required-version = "~=0.8.19"
+
 # pytest settings
 [tool.pytest.ini_options]
 minversion = "8.3"
