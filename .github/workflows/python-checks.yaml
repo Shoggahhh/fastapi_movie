@@ -25,7 +25,7 @@ jobs:
           pip install "black==25.1.0"
       - name: Black ⬛
         run: black --check --diff ./
-  list-dependencies:
+  run-mypy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -34,5 +34,5 @@ jobs:
         uses: astral-sh/setup-uv@v6
       - name: Install the project
         run: uv sync --locked --all-extras --dev
-      - name: list_dependencies
-        run: uv tree
+      - name: Run mypy
+        run: uv run mypy movie
