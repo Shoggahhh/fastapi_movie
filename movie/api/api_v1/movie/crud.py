@@ -48,10 +48,7 @@ class MovieStorage(BaseModel):
     def get(self) -> list[Movie]:
         return [
             Movie.model_validate_json(value)
-            for value in cast(
-                Iterable[str],
-                redis.hvals(config.REDIS_MOVIES_HASH_NAME),
-            )
+            for value in cast(Iterable[str], redis.hvals(config.REDIS_MOVIES_HASH_NAME))
         ]
 
     def get_by_slug(self, slug: str) -> Movie | None:
@@ -69,7 +66,7 @@ class MovieStorage(BaseModel):
             bool,
             redis.hexists(
                 name=config.REDIS_MOVIES_HASH_NAME,
-                key=slug,
+                key=slug
             ),
         )
 
