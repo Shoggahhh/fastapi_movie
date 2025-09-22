@@ -64,10 +64,7 @@ class MovieStorage(BaseModel):
     def exists(self, slug: str) -> bool:
         return cast(
             bool,
-            redis.hexists(
-                name=config.REDIS_MOVIES_HASH_NAME,
-                key=slug
-            ),
+            redis.hexists(name=config.REDIS_MOVIES_HASH_NAME, key=slug),
         )
 
     def create(self, movie_in: MovieCreate) -> Movie:
