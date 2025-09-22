@@ -1,6 +1,5 @@
 # FastAPI Url Shortener
 
-[![Python checks 🐍](https://github.com/Shoggahhh/fastapi_movie/actions/workflows/python-checks.yaml/badge.svg?branch=master)](https://github.com/Shoggahhh/fastapi_movie/actions/workflows/python-checks.yaml)
 
 [![CI: Python checks 🐍](https://img.shields.io/github/actions/workflow/status/Shoggahhh/fastapi_movie/python-checks.yaml?branch=master&label=Python%20checks%20%F0%9F%90%8D&style=for-the-badge&logo=github)](https://github.com/Shoggahhh/fastapi_movie/actions/workflows/python-checks.yaml)
 
