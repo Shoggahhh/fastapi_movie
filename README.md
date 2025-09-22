@@ -1,5 +1,7 @@
 # FastAPI Url Shortener
 
+[![Python checks 🐍](https://github.com/Shoggahhh/fastapi_movie/actions/workflows/python-checks.yaml/badge.svg?branch=master)](https://github.com/Shoggahhh/fastapi_movie/actions/workflows/python-checks.yaml)
+
 ## Developer
 
 Check GitHub Action after any push
