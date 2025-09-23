@@ -48,4 +48,17 @@ jobs:
     needs:
       - run-checks
     steps:
-      - run: echo Hello Tests!
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: '.python-version'
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version-file: 'pyproject.toml'
+      - name: Install dependencies
+        run: uv sync --locked --all-extras --dev
+      - name: Run python tests
+        run: uv run pytest
+        env:
+          TESTING: 1
