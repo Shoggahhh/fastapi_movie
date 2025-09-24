@@ -9,6 +9,7 @@
 [![mypy](https://img.shields.io/badge/types-mypy-2F74C0?style=for-the-badge&logo=mypy&logoColor=white)](https://github.com/python/mypy)
 [![uv](https://img.shields.io/badge/deps%20manager-uv-222?style=for-the-badge)]([https://docs.astral.sh/uv/](https://github.com/astral-sh/uv))
 
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/Shoggahhh/fastapi_movie/master.svg)](https://results.pre-commit.ci/latest/github/Shoggahhh/fastapi_movie/master)
 [![codecov](https://codecov.io/gh/Shoggahhh/fastapi_movie/branch/master/graph/badge.svg)](https://codecov.io/gh/Shoggahhh/fastapi_movie)
 
 ## Developer
