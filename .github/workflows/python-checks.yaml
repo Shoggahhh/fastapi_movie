@@ -75,6 +75,25 @@ jobs:
         env:
           TESTING: 1
           REDIS_PORT: 6379
+      - name: Upload coverage-reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: |
+            coverage.json
+            coverage.xml
+          retention-days: 1
+
+  update-coverage-badge:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs:
+      - run-tests
+    steps:
+      - name: Download coverage reports
+        uses: actions/download-artifact@v5
+        with:
+          name: coverage-reports
       - name: Prepare coverage percentage
         run: |
           export EXTRACTED_COVERAGE=$(python -c 'import json;print(json.load(open("coverage.json"))["totals"]["percent_covered_display"])')
@@ -91,6 +110,16 @@ jobs:
           minColorRange: 70
           maxColorRange: 90
           valColorRange: ${{ env.TOTAL_COVERAGE }}
+
+  upload-to-codecov:
+    runs-on: ubuntu-latest
+    needs:
+      - run-tests
+    steps:
+      - name: Download coverage reports
+        uses: actions/download-artifact@v5
+        with:
+          name: coverage-reports
       - name: Update coverage reports to Codecov
         uses: codecov/codecov-action@v5
         if: ${{ !github.event.act }}
