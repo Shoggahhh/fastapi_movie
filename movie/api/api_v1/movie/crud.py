@@ -5,7 +5,7 @@ from typing import cast
 from pydantic import BaseModel
 from redis import Redis
 
-from core import config
+from core.config import settings
 from schemas.movie import (
     Movie,
     MovieCreate,
@@ -36,14 +36,15 @@ class MovieAlreadyExistsError(MovieBaseError):
 
 
 redis = Redis(
-    host=config.REDIS_HOST,
-    port=config.REDIS_PORT,
-    db=config.REDIS_DB_MOVIE,
+    host=settings.redis.connection.host,
+    port=settings.redis.connection.port,
+    db=settings.redis.db.movie,
     decode_responses=True,
 )
 
 
 class MovieStorage(BaseModel):
+    hash_name: str
 
     def get(self) -> list[Movie]:
         return [
@@ -51,14 +52,14 @@ class MovieStorage(BaseModel):
             for value in cast(
                 Iterable[str],
                 redis.hvals(
-                    config.REDIS_MOVIES_HASH_NAME,
+                    self.hash_name,
                 ),
             )
         ]
 
     def get_by_slug(self, slug: str) -> Movie | None:
         data = redis.hget(
-            name=config.REDIS_MOVIES_HASH_NAME,
+            name=self.hash_name,
             key=slug,
         )
         if data:
@@ -70,7 +71,7 @@ class MovieStorage(BaseModel):
         return cast(
             bool,
             redis.hexists(
-                name=config.REDIS_MOVIES_HASH_NAME,
+                name=self.hash_name,
                 key=slug,
             ),
         )
@@ -105,14 +106,14 @@ class MovieStorage(BaseModel):
 
     def save_movie(self, movie: Movie) -> None:
         redis.hset(
-            config.REDIS_MOVIES_HASH_NAME,
+            self.hash_name,
             key=movie.slug,
             value=movie.model_dump_json(),
         )
 
     def delete_by_slug(self, slug: str) -> None:
         redis.hdel(
-            config.REDIS_MOVIES_HASH_NAME,
+            self.hash_name,
             slug,
         )
         log.info("Deleted movie by slug %s", slug)
@@ -121,4 +122,6 @@ class MovieStorage(BaseModel):
         self.delete_by_slug(slug=movie.slug)
 
 
-storage = MovieStorage()
+storage = MovieStorage(
+    hash_name=settings.redis.collections_name.movie_hash,
+)
