@@ -8,7 +8,7 @@
 [![Ruff](https://img.shields.io/badge/lint-ruff-F9622E?style=for-the-badge&logo=ruff&logoColor=white)](https://github.com/astral-sh/ruff)
 [![mypy](https://img.shields.io/badge/types-mypy-2F74C0?style=for-the-badge&logo=mypy&logoColor=white)](https://github.com/python/mypy)
 [![uv](https://img.shields.io/badge/deps%20manager-uv-222?style=for-the-badge)]([https://docs.astral.sh/uv/](https://github.com/astral-sh/uv))
-[![Coverage](https://img.shields.io/endpoint?url=https//:gist.githubusercontent.com/Shoggahhh/704faec4705e8aa2a390ca51a16798f9/raw/coverage.json&style=for-the-badge)](https://github.com/Shoggahhh/fastapi_movie/actions/workflows/python-checks.yaml)
+[![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Shoggahhh/704faec4705e8aa2a390ca51a16798f9/raw/coverage.json&style=for-the-badge)](https://github.com/Shoggahhh/fastapi_movie/actions/workflows/python-checks.yaml)
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/Shoggahhh/fastapi_movie/master.svg)](https://results.pre-commit.ci/latest/github/Shoggahhh/fastapi_movie/master)
 [![codecov](https://codecov.io/gh/Shoggahhh/fastapi_movie/branch/master/graph/badge.svg)](https://codecov.io/gh/Shoggahhh/fastapi_movie)
