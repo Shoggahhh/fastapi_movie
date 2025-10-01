@@ -14,7 +14,6 @@ on:
 jobs:
   run-checks:
     runs-on: ubuntu-latest
-    container: node:20-noble
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
@@ -46,6 +45,7 @@ jobs:
         run: uv run mypy movie
   run-tests:
     runs-on: ubuntu-latest
+    container: node:20-bookworm-slim
     needs:
       - run-checks
     services:
