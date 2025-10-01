@@ -3,7 +3,12 @@ from pathlib import Path
 from typing import Literal, Self
 
 from pydantic import BaseModel, model_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import (
+    BaseSettings,
+    PydanticBaseSettingsSource,
+    SettingsConfigDict,
+    YamlConfigSettingsSource,
+)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -68,7 +73,31 @@ class Settings(BaseSettings):
         ),
         env_prefix="MOVIE__",
         env_nested_delimiter="__",
+        yaml_file=(
+            BASE_DIR / "config.default.yaml",
+            BASE_DIR / "config.local.yaml",
+        ),
+        yaml_config_section="movie",
     )
+
+    @classmethod
+    def settings_customise_sources(
+        cls,
+        settings_cls: type[BaseSettings],
+        init_settings: PydanticBaseSettingsSource,
+        env_settings: PydanticBaseSettingsSource,
+        dotenv_settings: PydanticBaseSettingsSource,
+        file_secret_settings: PydanticBaseSettingsSource,
+    ) -> tuple[PydanticBaseSettingsSource, ...]:
+
+        return (
+            init_settings,
+            env_settings,
+            dotenv_settings,
+            file_secret_settings,
+            YamlConfigSettingsSource(settings_cls),
+        )
+
     logging: LoggingConfig = LoggingConfig()
     redis: RedisConfig = RedisConfig()
 
